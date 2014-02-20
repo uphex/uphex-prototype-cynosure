@@ -1,27 +1,43 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'uphex/prototype/cynosure/version'
+# -*- encoding: utf-8 -*-
 
-Gem::Specification.new do |spec|
-  spec.name          = "uphex-prototype-cynosure"
-  spec.version       = Uphex::Prototype::Cynosure::VERSION
-  spec.authors       = ["sashee"]
-  spec.email         = ["gsashee@gmail.com"]
-  spec.description   = %q{Uphex Shiatsu}
-  spec.summary       = %q{OAuth data fetcher}
-  spec.homepage      = ""
-  spec.license       = "MIT"
+Gem::Specification.new do |s|
+  s.name = "uphex-prototype-cynosure"
+  s.version = "0.0.1"
 
-  spec.files         = Dir["README.md","Gemfile","Rakefile", "spec/*", "lib/**/*"]#`git ls-files`.split($/)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ["lib"]
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["sashee"]
+  s.date = "2014-02-20"
+  s.description = "Uphex Shiatsu"
+  s.email = ["gsashee@gmail.com"]
+  s.files = ["README.md", "Gemfile", "Rakefile", "spec/google_spec.rb", "lib/uphex", "lib/uphex/prototype", "lib/uphex/prototype/cynosure", "lib/uphex/prototype/cynosure/version.rb", "lib/uphex/prototype/cynosure/shiatsu.rb", "lib/uphex/prototype/cynosure.rb"]
+  s.homepage = ""
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "2.0.3"
+  s.summary = "OAuth data fetcher"
+  s.test_files = ["spec/google_spec.rb"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
+  if s.respond_to? :specification_version then
+    s.specification_version = 4
 
-  spec.add_dependency "oauth2"
-  spec.add_dependency "legato"
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_development_dependency(%q<bundler>, ["~> 1.3"])
+      s.add_development_dependency(%q<rake>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_runtime_dependency(%q<oauth2>, [">= 0"])
+      s.add_runtime_dependency(%q<legato>, [">= 0"])
+    else
+      s.add_dependency(%q<bundler>, ["~> 1.3"])
+      s.add_dependency(%q<rake>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<oauth2>, [">= 0"])
+      s.add_dependency(%q<legato>, [">= 0"])
+    end
+  else
+    s.add_dependency(%q<bundler>, ["~> 1.3"])
+    s.add_dependency(%q<rake>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<oauth2>, [">= 0"])
+    s.add_dependency(%q<legato>, [">= 0"])
+  end
 end
