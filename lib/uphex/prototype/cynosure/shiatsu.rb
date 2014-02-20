@@ -4,12 +4,12 @@ module Uphex
   module Prototype
     module Cynosure
       module Shiatsu
-        def self.client(client_type)
+        def self.client(client_type, identifier,secret)
           case client_type
             when :twitter
               Twitter::Client.new
             when :google
-              Google::Client.new
+              Google::Client.new(identifier,secret)
             when :facebook
               Facebook::Client.new
           end
@@ -39,13 +39,15 @@ module Uphex
         module Google
           require 'legato'
 
-
           class Client
-            def authenticate(access_token,expires,refresh_token)
-              @config = JSON.parse(File.read(File.expand_path("../../auth_config.json", __FILE__)))
-              config=@config['oauth-v2']['providers']['google']
 
-              client = OAuth2::Client.new(config['identifier'], config['secret'], {
+            def initialize(identifier,secret)
+              @identifier=identifier
+              @secret=secret
+            end
+
+            def authenticate(access_token,expires,refresh_token)
+              client = OAuth2::Client.new(@identifier, @secret, {
                   :authorize_url => 'https://accounts.google.com/o/oauth2/auth',
                   :token_url => 'https://accounts.google.com/o/oauth2/token'
               })
@@ -115,14 +117,23 @@ module Uphex
               dimensions :fullReferrer
             end
 
+            def beginning_of_week(date)
+              days_to_monday = date.wday!=0 ? date.wday-1 : 6
+              date - days_to_monday
+            end
+
+            def beginning_of_month(date)
+              Date.new(date.year,date.month,1)
+            end
+
             def apply_granularity(result,granularity)
               case granularity
                 when :day
-                  result.map{|r| {:timestamp=>Date.parse(r.date),:payload=>yield(r)}}
+                  result.map{|r| {:timestamp=>Date.parse(r.date),:payload=>yield(r).to_i}}
                 when :week
-                  result.group_by{|r| Date.parse(r.date).beginning_of_week}.map{|k,v| {:timestamp=>k,:payload=>v.reduce(0){|sum,value| sum+yield(value).to_i}}}
+                  result.group_by{|r| beginning_of_week(Date.parse(r.date))}.map{|k,v| {:timestamp=>k,:payload=>v.reduce(0){|sum,value| sum+yield(value).to_i}}}
                 when :month
-                  result.group_by{|r| Date.parse(r.date).beginning_of_month}.map{|k,v| {:timestamp=>k,:payload=>v.reduce(0){|sum,value| sum+yield(value).to_i}}}
+                  result.group_by{|r| beginning_of_month(Date.parse(r.date))}.map{|k,v| {:timestamp=>k,:payload=>v.reduce(0){|sum,value| sum+yield(value).to_i}}}
               end
             end
 
