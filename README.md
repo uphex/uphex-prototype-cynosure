@@ -1,6 +1,6 @@
 # Uphex::Prototype::Cynosure
 
-TODO: Write a gem description
+Uphex Shiatsu
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
 
 ## Contributing
 

@@ -1,4 +1,5 @@
 require "uphex/prototype/cynosure/version"
+require 'uphex/prototype/cynosure/shiatsu'
 
 module Uphex
   module Prototype
