@@ -2,14 +2,14 @@
 
 Gem::Specification.new do |s|
   s.name = "uphex-prototype-cynosure"
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["sashee"]
   s.date = "2014-02-20"
   s.description = "Uphex Shiatsu"
   s.email = ["gsashee@gmail.com"]
-  s.files = ["README.md", "Gemfile", "Rakefile", "spec/google_spec.rb","spec/twitter_spec.rb", "lib/uphex", "lib/uphex/prototype", "lib/uphex/prototype/cynosure", "lib/uphex/prototype/cynosure/version.rb", "lib/uphex/prototype/cynosure/shiatsu.rb", "lib/uphex/prototype/cynosure.rb"]
+  s.files = ["README.md", "Gemfile", "Rakefile", "spec/google_spec.rb","spec/twitter_spec.rb", "spec/facebook_spec.rb","lib/uphex", "lib/uphex/prototype", "lib/uphex/prototype/cynosure", "lib/uphex/prototype/cynosure/version.rb", "lib/uphex/prototype/cynosure/shiatsu.rb", "lib/uphex/prototype/cynosure.rb"]
   s.homepage = ""
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<oauth2>, [">= 0"])
       s.add_runtime_dependency(%q<legato>, [">= 0"])
       s.add_runtime_dependency(%q<twitter>, [">= 0"])
+      s.add_runtime_dependency(%q<koala>, [">= 0"])
     else
       s.add_dependency(%q<bundler>, ["~> 1.3"])
       s.add_dependency(%q<rake>, [">= 0"])
@@ -34,6 +35,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<oauth2>, [">= 0"])
       s.add_dependency(%q<legato>, [">= 0"])
       s.add_dependency(%q<twitter>, [">= 0"])
+      s.add_dependency(%q<koala>, [">= 0"])
     end
   else
     s.add_dependency(%q<bundler>, ["~> 1.3"])
@@ -42,5 +44,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<oauth2>, [">= 0"])
     s.add_dependency(%q<legato>, [">= 0"])
     s.add_dependency(%q<twitter>, [">= 0"])
+    s.add_dependency(%q<koala>, [">= 0"])
   end
 end
