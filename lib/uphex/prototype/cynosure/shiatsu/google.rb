@@ -12,23 +12,13 @@ module Uphex
               @secret=secret
             end
 
-            def authenticate(access_token,expires,refresh_token)
+            def authenticate(access_token)
               client = OAuth2::Client.new(@identifier, @secret, {
                   :authorize_url => 'https://accounts.google.com/o/oauth2/auth',
                   :token_url => 'https://accounts.google.com/o/oauth2/token'
               })
-              client.auth_code.authorize_url({
-                                                 :scope => 'https://www.googleapis.com/auth/analytics.readonly',
-                                                 :redirect_uri => 'http://127.0.0.1:9292/auth/oauth-v2/google/callback',
-                                                 :access_type => 'offline'
-                                             })
-              access_token=OAuth2::AccessToken.from_hash client, {:access_token => access_token,:refresh_token=>refresh_token}
 
-
-
-              if Time.now>expires
-                access_token=access_token.refresh!
-              end
+              access_token=OAuth2::AccessToken.from_hash client, {:access_token => access_token}
 
               @user = Legato::User.new(access_token)
 
