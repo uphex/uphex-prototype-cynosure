@@ -73,6 +73,30 @@ module Uphex
               dimensions :fullReferrer
             end
 
+            class Impressions
+              extend Legato::Model
+
+              metrics :impressions
+
+              dimensions :date
+            end
+
+            class AdClicks
+              extend Legato::Model
+
+              metrics :adClicks
+
+              dimensions :date
+            end
+
+            class OrganicSearches
+              extend Legato::Model
+
+              metrics :organicSearches
+
+              dimensions :date
+            end
+
             def beginning_of_week(date)
               days_to_monday = date.wday!=0 ? date.wday-1 : 6
               date - days_to_monday
@@ -107,6 +131,18 @@ module Uphex
 
             def referrers(start_date,end_date)
               Referrers.results(@profile,:start_date=>start_date,:end_date=>end_date).map{|r| r.fullReferrer}
+            end
+
+            def impressions(start_date,end_date,granularity)
+              Metric.new('impressions',[[:impressions],[granularity]],apply_granularity(Impressions.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.impressions})
+            end
+
+            def ad_clicks(start_date,end_date,granularity)
+              Metric.new('adClicks',[[:adClicks],[granularity]],apply_granularity(AdClicks.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.adClicks})
+            end
+
+            def organic_searches(start_date,end_date,granularity)
+              Metric.new('organicSearches',[[:organicSearches],[granularity]],apply_granularity(OrganicSearches.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.organicSearches})
             end
           end
         end
