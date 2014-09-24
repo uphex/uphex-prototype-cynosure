@@ -74,7 +74,7 @@ module Uphex
                 if result.empty?
                   memo
                 else
-                  memo+result[0]['values'][0]['value']
+                  memo+result.first['values'].first['value']
                 end
               }
             end
