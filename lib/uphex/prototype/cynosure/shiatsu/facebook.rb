@@ -80,19 +80,19 @@ module Uphex
             end
 
             def post_impressions_paid
-              post_aggregated_insight(posts,'post_impressions_paid')
+              Metric.new('post_impressions_paid',[[:post_impressions_paid],[:lifetime]],{:payload=>post_aggregated_insight(posts,'post_impressions_paid')})
             end
 
             def post_impressions_fan_paid
-              post_aggregated_insight(posts,'post_impressions_fan_paid')
+              Metric.new('post_impressions_fan_paid',[[:post_impressions_fan_paid],[:lifetime]],{:payload=>post_aggregated_insight(posts,'post_impressions_fan_paid')})
             end
 
             def post_video_complete_views_paid
-              post_aggregated_insight(videos,'post_video_complete_views_paid')
+              Metric.new('post_video_complete_views_paid',[[:post_video_complete_views_paid],[:lifetime]],{:payload=>post_aggregated_insight(videos,'post_video_complete_views_paid')})
             end
 
             def post_video_views_paid
-              post_aggregated_insight(videos,'post_video_views_paid')
+              Metric.new('post_video_views_paid',[[:post_video_views_paid],[:lifetime]],{:payload=>post_aggregated_insight(videos,'post_video_views_paid')})
             end
           end
         end

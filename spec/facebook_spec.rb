@@ -114,10 +114,16 @@ describe Uphex::Prototype::Cynosure::Shiatsu do
   end
 
   it 'should calculate the post paid impressions' do
-    expect(@client.post_impressions_paid).to eq(5)
+    res=@client.post_impressions_paid
+    expect(res.name).to eql('post_impressions_paid')
+    expect(res.unit).to eql([[:post_impressions_paid],[:lifetime]])
+    expect(res.value[:payload]).to eql(5)
   end
 
   it 'should calculate the video paid impressions' do
-    expect(@client.post_video_views_paid).to eq(3)
+    res=@client.post_video_views_paid
+    expect(res.name).to eql('post_video_views_paid')
+    expect(res.unit).to eql([[:post_video_views_paid],[:lifetime]])
+    expect(res.value[:payload]).to eql(3)
   end
 end
