@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.date = "2014-02-20"
   s.description = "Uphex Shiatsu"
   s.email = ["gsashee@gmail.com"]
-  s.files = ["README.md", "Gemfile", "Rakefile", "spec/google_spec.rb","spec/twitter_spec.rb", "spec/facebook_spec.rb","lib/uphex", "lib/uphex/prototype", "lib/uphex/prototype/cynosure", "lib/uphex/prototype/cynosure/version.rb", "lib/uphex/prototype/cynosure/shiatsu/facebook.rb", "lib/uphex/prototype/cynosure/shiatsu/google.rb","lib/uphex/prototype/cynosure/shiatsu/twitter.rb","lib/uphex/prototype/cynosure/shiatsu.rb", "lib/uphex/prototype/cynosure.rb"]
+  s.files = ["README.md", "Gemfile", "Rakefile", "spec/google_spec.rb","spec/twitter_spec.rb", "spec/facebook_spec.rb","spec/mailchimp_spec.rb","lib/uphex", "lib/uphex/prototype", "lib/uphex/prototype/cynosure", "lib/uphex/prototype/cynosure/version.rb", "lib/uphex/prototype/cynosure/shiatsu/facebook.rb", "lib/uphex/prototype/cynosure/shiatsu/google.rb","lib/uphex/prototype/cynosure/shiatsu/twitter.rb","lib/uphex/prototype/cynosure/shiatsu/mailchimp.rb","lib/uphex/prototype/cynosure/shiatsu.rb", "lib/uphex/prototype/cynosure.rb"]
   s.homepage = ""
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
