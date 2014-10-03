@@ -87,7 +87,7 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Mailchimp do
     expect(@client.campaign_stats(@client.campaigns.first)).to eq(@campaign1_summary)
   end
 
-  it 'should not return nil for a campaign that do not have stats yet' do
+  it 'should return nil for a campaign that do not have stats yet' do
     expect(@client.campaign_stats(@client.campaigns[1])).to eq(nil)
   end
 
