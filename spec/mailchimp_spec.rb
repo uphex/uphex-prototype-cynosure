@@ -11,7 +11,7 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Mailchimp do
     allow(client).to receive(:users) do
       users=double('users')
 
-      allow(users).to receive(:profile).and_return({'account_name'=>'test_account'})
+      allow(users).to receive(:profile).and_return({'id'=>'12','account_name'=>'test_account'})
 
       users
     end
@@ -108,8 +108,9 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Mailchimp do
     expect(@client.aggregated_campaign_stats['unique_clicks']).to eq(20)
   end
 
-  it 'should return the account name' do
-    expect(@client.account_name).to eq('test_account')
+  it 'should return the profile' do
+    expect(@client.profile['account_name']).to eq('test_account')
+    expect(@client.profile['id']).to eq('12')
   end
 
 end

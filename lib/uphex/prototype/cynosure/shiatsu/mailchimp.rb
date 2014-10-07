@@ -20,10 +20,6 @@ module Uphex
               @client.users.profile
             end
 
-            def account_name
-              profile['account_name']
-            end
-
             def campaigns
               limit=100
               total=@client.campaigns.list(nil,0,0)['total']
