@@ -2,6 +2,7 @@ require 'oauth2'
 require_relative 'shiatsu/facebook'
 require_relative 'shiatsu/google'
 require_relative 'shiatsu/twitter'
+require_relative 'shiatsu/mailchimp'
 
 module Uphex
   module Prototype
@@ -15,6 +16,8 @@ module Uphex
               Google::Client.new(identifier,secret)
             when :facebook
               Facebook::Client.new
+            when :mailchimp
+              Shiatsu_Mailchimp::Client.new
           end
         end
 
