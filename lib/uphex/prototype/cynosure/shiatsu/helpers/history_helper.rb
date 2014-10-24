@@ -5,6 +5,11 @@ module Uphex
         module Helpers
           class HistoryHelper
 
+            # === Parameters
+            # since:: A DateTime to indicate when we want the data from
+            # last_known_value:: An optional {:time,:value} hash to build the history from
+            # initial:: The aggregated value between the last_known_value and since
+            # data:: The data objects to build the history from
             def initialize(since,last_known_value,initial,data)
               @since=since
               @last_known_value=(last_known_value or {:time=>DateTime.new,:value=>0})
