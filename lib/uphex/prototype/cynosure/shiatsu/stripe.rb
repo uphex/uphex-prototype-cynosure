@@ -34,9 +34,20 @@ module Uphex
               Helpers::HistoryHelper.new(since,last_known_value,initial,data).history
             end
 
+            def refunds(since,last_known_value={:time=>DateTime.new,:value=>0})
+
+              def filter_by_refund(data)
+                data['type']=='refund'
+              end
+
+              initial,data=fetched(Stripe::BalanceTransaction,since,last_known_value[:time],:created,&method(:filter_by_refund))
+
+              Helpers::HistoryHelper.new(since,last_known_value,initial,data).history
+            end
+
             private
 
-            def fetched(stripe_obj,since,last_known_time,date_field)
+            def fetched(stripe_obj,since,last_known_time,date_field,&filter)
               limit_max=100
               all=[]
               page=stripe_obj.all({:limit=>limit_max,date_field=>{:gte=>[since.to_time.to_i,last_known_time.to_time.to_i+1].max.to_s}},@api_key)
@@ -44,6 +55,9 @@ module Uphex
               while page['has_more']
                 page=stripe_obj.all({:limit=>limit_max,date_field=>{:gte=>[since.to_time.to_i,last_known_time.to_time.to_i+1].max.to_s},:starting_after=>page['data'].last['id']},@api_key)
                 all.concat(page['data'])
+              end
+              unless filter.nil?
+                all=all.select{|data| filter.call(data)}
               end
               all=all.map{|customer| {:time=>DateTime.strptime(customer[date_field.to_s].to_s,'%s'),:value=>1}}
               initial=stripe_obj.all({:include=>['total_count'],:limit=>1,date_field=>{:gt=>last_known_time.to_time.to_i.to_s,:lt=>since.to_time.to_i.to_s}},@api_key)['total_count']

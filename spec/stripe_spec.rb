@@ -1,5 +1,4 @@
 require 'uphex/prototype/cynosure'
-require 'ostruct'
 require 'timecop'
 require 'securerandom'
 
@@ -15,6 +14,8 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
     @charges=[]
 
     @invoices=[]
+
+    @balance_transactions=[]
 
     allow(Stripe::Account).to receive(:retrieve).with('api_key-us1').and_return(@profile)
 
@@ -63,6 +64,11 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
     allow(Stripe::Invoice).to receive(:all) do |args,api_key|
       expect(api_key).to eql('api_key-us1')
       handle_object_list(@invoices,args,:date)
+    end
+
+    allow(Stripe::BalanceTransaction).to receive(:all) do |args,api_key|
+      expect(api_key).to eql('api_key-us1')
+      handle_object_list(@balance_transactions,args,:created)
     end
   end
 
@@ -267,6 +273,46 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
     Timecop.freeze(Time.utc(2014,10,20)){
       result= @client.charges(DateTime.new(2014,10,18),last_known_value)
+      expect(result).to match_array(expected)
+    }
+  end
+
+  it 'should return the refunds' do
+    @balance_transactions=[
+        {
+            'type'=>'charge',
+            'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
+        },
+        {
+            'type'=>'refund',
+            'created'=>DateTime.new(2014,10,19,13).to_time.to_i.to_s
+        },
+        {
+            'type'=>'other',
+            'created'=>DateTime.new(2014,10,19,14).to_time.to_i.to_s
+        },
+    ].map{|data|
+        new=data.clone
+        new['id']=SecureRandom.hex
+        new
+    }
+    expected=[
+        {
+            :time=>DateTime.new(2014,10,19),
+            :value=>3
+        },
+        {
+            :time=>DateTime.new(2014,10,20),
+            :value=>4
+        }
+    ]
+    last_known_value={
+        :time=>DateTime.new(2014,10,19),
+        :value=>3
+    }
+
+    Timecop.freeze(Time.utc(2014,10,20)){
+      result= @client.refunds(DateTime.new(2014,10,18),last_known_value)
       expect(result).to match_array(expected)
     }
   end
