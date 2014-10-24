@@ -29,6 +29,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<twitter>, [">= 0"])
       s.add_runtime_dependency(%q<koala>, [">= 0"])
       s.add_runtime_dependency(%q<mailchimp-api>, [">= 0"])
+      s.add_runtime_dependency(%q<stripe>, [">= 0"])
+      s.add_runtime_dependency(%q<timecop>, [">= 0"])
     else
       s.add_dependency(%q<bundler>, ["~> 1.3"])
       s.add_dependency(%q<rake>, [">= 0"])
@@ -38,6 +40,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<twitter>, [">= 0"])
       s.add_dependency(%q<koala>, [">= 0"])
       s.add_dependency(%q<mailchimp-api>, [">= 0"])
+      s.add_dependency(%q<stripe>, [">= 0"])
+      s.add_dependency(%q<timecop>, [">= 0"])
     end
   else
     s.add_dependency(%q<bundler>, ["~> 1.3"])
@@ -48,5 +52,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<twitter>, [">= 0"])
     s.add_dependency(%q<koala>, [">= 0"])
     s.add_dependency(%q<mailchimp-api>, [">= 0"])
+    s.add_dependency(%q<stripe>, [">= 0"])
+    s.add_dependency(%q<timecop>, [">= 0"])
   end
 end
