@@ -2,7 +2,7 @@ require 'uphex/prototype/cynosure'
 require 'timecop'
 require 'securerandom'
 
-describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
+describe Uphex::Prototype::Cynosure::Shiatsu::Stripe do
 
   before do
     @client=Uphex::Prototype::Cynosure::Shiatsu.client(:stripe,nil,nil).authenticate('api_key-us1')
@@ -81,18 +81,18 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
     it 'should return the customer history if there is no data' do
       @customers=[]
       expected=[
-          {
-              :time=>DateTime.new(2014,10,18),
-              :value=>0
-          },
-          {
-              :time=>DateTime.new(2014,10,19),
-              :value=>0
-          },
-          {
-              :time=>DateTime.new(2014,10,20),
-              :value=>0
-          }
+        {
+          :time=>DateTime.new(2014,10,18),
+          :value=>0
+        },
+        {
+          :time=>DateTime.new(2014,10,19),
+          :value=>0
+        },
+        {
+          :time=>DateTime.new(2014,10,20),
+          :value=>0
+        }
       ]
 
       Timecop.freeze(Time.utc(2014,10,20)){
@@ -103,32 +103,32 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
     it 'should return the customer history when there are multiple data points' do
       @customers=[
-          {
-              'created'=>DateTime.new(2014,10,15).to_time.to_i.to_s
-          },
-          {
-              'created'=>DateTime.new(2014,10,16).to_time.to_i.to_s
-          },
-          {
-              'created'=>DateTime.new(2014,10,18).to_time.to_i.to_s
-          },
-          {
-              'created'=>DateTime.new(2014,10,18,12).to_time.to_i.to_s
-          }
+        {
+          'created'=>DateTime.new(2014,10,15).to_time.to_i.to_s
+        },
+        {
+          'created'=>DateTime.new(2014,10,16).to_time.to_i.to_s
+        },
+        {
+          'created'=>DateTime.new(2014,10,18).to_time.to_i.to_s
+        },
+        {
+          'created'=>DateTime.new(2014,10,18,12).to_time.to_i.to_s
+        }
       ].map{|data| {'id'=>SecureRandom.hex,'created'=>data['created']}}
       expected=[
-          {
-              :time=>DateTime.new(2014,10,18),
-              :value=>2
-          },
-          {
-              :time=>DateTime.new(2014,10,19),
-              :value=>4
-          },
-          {
-              :time=>DateTime.new(2014,10,20),
-              :value=>4
-          }
+        {
+          :time=>DateTime.new(2014,10,18),
+          :value=>2
+        },
+        {
+          :time=>DateTime.new(2014,10,19),
+          :value=>4
+        },
+        {
+          :time=>DateTime.new(2014,10,20),
+          :value=>4
+        }
       ]
 
       Timecop.freeze(Time.utc(2014,10,20)){
@@ -139,21 +139,21 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
     it 'should return the customer history even if there are many customers and needs to paginate' do
       @customers=
-          ((1..150).map{|num| {'created'=>DateTime.new(2014,10,15).to_time.to_i.to_s}}+
+        ((1..150).map{|num| {'created'=>DateTime.new(2014,10,15).to_time.to_i.to_s}}+
           (1..150).map{|num| {'created'=>DateTime.new(2014,10,18,12).to_time.to_i.to_s}}).map{|data| {'id'=>SecureRandom.hex,'created'=>data['created']}}
       expected=[
-          {
-              :time=>DateTime.new(2014,10,18),
-              :value=>150
-          },
-          {
-              :time=>DateTime.new(2014,10,19),
-              :value=>300
-          },
-          {
-              :time=>DateTime.new(2014,10,20),
-              :value=>300
-          }
+        {
+          :time=>DateTime.new(2014,10,18),
+          :value=>150
+        },
+        {
+          :time=>DateTime.new(2014,10,19),
+          :value=>300
+        },
+        {
+          :time=>DateTime.new(2014,10,20),
+          :value=>300
+        }
       ]
 
       Timecop.freeze(Time.utc(2014,10,20)){
@@ -166,27 +166,27 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
   context 'has known value' do
     it 'should return the customer history for simple cases' do
       @customers=[
-          {
-              'created'=>DateTime.new(2014,10,18,12).to_time.to_i.to_s
-          }
+        {
+          'created'=>DateTime.new(2014,10,18,12).to_time.to_i.to_s
+        }
       ].map{|data| {'id'=>SecureRandom.hex,'created'=>data['created']}}
       expected=[
-          {
-              :time=>DateTime.new(2014,10,18),
-              :value=>3
-          },
-          {
-              :time=>DateTime.new(2014,10,19),
-              :value=>4
-          },
-          {
-              :time=>DateTime.new(2014,10,20),
-              :value=>4
-          }
-      ]
-      last_known_value={
+        {
           :time=>DateTime.new(2014,10,18),
           :value=>3
+        },
+        {
+          :time=>DateTime.new(2014,10,19),
+          :value=>4
+        },
+        {
+          :time=>DateTime.new(2014,10,20),
+          :value=>4
+        }
+      ]
+      last_known_value={
+        :time=>DateTime.new(2014,10,18),
+        :value=>3
       }
 
       Timecop.freeze(Time.utc(2014,10,20)){
@@ -197,23 +197,23 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
     it 'should return the customer history when the last known value is after the since' do
       @customers=[
-          {
-              'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
-          }
+        {
+          'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
+        }
       ].map{|data| {'id'=>SecureRandom.hex,'created'=>data['created']}}
       expected=[
-          {
-              :time=>DateTime.new(2014,10,19),
-              :value=>3
-          },
-          {
-              :time=>DateTime.new(2014,10,20),
-              :value=>4
-          }
-      ]
-      last_known_value={
+        {
           :time=>DateTime.new(2014,10,19),
           :value=>3
+        },
+        {
+          :time=>DateTime.new(2014,10,20),
+          :value=>4
+        }
+      ]
+      last_known_value={
+        :time=>DateTime.new(2014,10,19),
+        :value=>3
       }
 
       Timecop.freeze(Time.utc(2014,10,20)){
@@ -225,23 +225,23 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
   it 'should return the invoices' do
     @invoices=[
-        {
-            'date'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
-        }
+      {
+        'date'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
+      }
     ].map{|data| {'id'=>SecureRandom.hex,'date'=>data['date']}}
     expected=[
-        {
-            :time=>DateTime.new(2014,10,19),
-            :value=>3
-        },
-        {
-            :time=>DateTime.new(2014,10,20),
-            :value=>4
-        }
-    ]
-    last_known_value={
+      {
         :time=>DateTime.new(2014,10,19),
         :value=>3
+      },
+      {
+        :time=>DateTime.new(2014,10,20),
+        :value=>4
+      }
+    ]
+    last_known_value={
+      :time=>DateTime.new(2014,10,19),
+      :value=>3
     }
 
     Timecop.freeze(Time.utc(2014,10,20)){
@@ -252,23 +252,23 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
   it 'should return the charges' do
     @charges=[
-        {
-            'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
-        }
+      {
+        'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
+      }
     ].map{|data| {'id'=>SecureRandom.hex,'created'=>data['created']}}
     expected=[
-        {
-            :time=>DateTime.new(2014,10,19),
-            :value=>3
-        },
-        {
-            :time=>DateTime.new(2014,10,20),
-            :value=>4
-        }
-    ]
-    last_known_value={
+      {
         :time=>DateTime.new(2014,10,19),
         :value=>3
+      },
+      {
+        :time=>DateTime.new(2014,10,20),
+        :value=>4
+      }
+    ]
+    last_known_value={
+      :time=>DateTime.new(2014,10,19),
+      :value=>3
     }
 
     Timecop.freeze(Time.utc(2014,10,20)){
@@ -279,36 +279,36 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Stripe do
 
   it 'should return the refunds' do
     @balance_transactions=[
-        {
-            'type'=>'charge',
-            'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
-        },
-        {
-            'type'=>'refund',
-            'created'=>DateTime.new(2014,10,19,13).to_time.to_i.to_s
-        },
-        {
-            'type'=>'other',
-            'created'=>DateTime.new(2014,10,19,14).to_time.to_i.to_s
-        },
+      {
+        'type'=>'charge',
+        'created'=>DateTime.new(2014,10,19,12).to_time.to_i.to_s
+      },
+      {
+        'type'=>'refund',
+        'created'=>DateTime.new(2014,10,19,13).to_time.to_i.to_s
+      },
+      {
+        'type'=>'other',
+        'created'=>DateTime.new(2014,10,19,14).to_time.to_i.to_s
+      },
     ].map{|data|
-        new=data.clone
-        new['id']=SecureRandom.hex
-        new
+      new=data.clone
+      new['id']=SecureRandom.hex
+      new
     }
     expected=[
-        {
-            :time=>DateTime.new(2014,10,19),
-            :value=>3
-        },
-        {
-            :time=>DateTime.new(2014,10,20),
-            :value=>4
-        }
-    ]
-    last_known_value={
+      {
         :time=>DateTime.new(2014,10,19),
         :value=>3
+      },
+      {
+        :time=>DateTime.new(2014,10,20),
+        :value=>4
+      }
+    ]
+    last_known_value={
+      :time=>DateTime.new(2014,10,19),
+      :value=>3
     }
 
     Timecop.freeze(Time.utc(2014,10,20)){

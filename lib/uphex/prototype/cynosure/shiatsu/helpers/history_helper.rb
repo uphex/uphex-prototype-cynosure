@@ -12,21 +12,28 @@ module Uphex
             # data:: The data objects to build the history from
             def initialize(since,last_known_value,initial,data)
               @since=since
-              @last_known_value=(last_known_value or {:time=>DateTime.new,:value=>0})
+              @last_known_value=(last_known_value or {:time => DateTime.new, :value => 0})
               @initial=initial
               @data=data
             end
 
             def history
-              current_time=closest_next_beginning_of_day [@last_known_value[:time],@since].max
-              current_value=@last_known_value[:value]+@initial+@data.select{|data| data[:time]>=@since && data[:time]<current_time}.map{|data| data[:value]}.inject(0,:+)
-              max_date=beginning_of_day DateTime.now
-              result=[]
+              current_time = closest_next_beginning_of_day [@last_known_value[:time],@since].max
+              current_value = begin
+                aggregated_value=@data.
+                  select{|data| data[:time]>=@since && data[:time]<current_time}.
+                  map{|data| data[:value]}.inject(0,:+)
+                @last_known_value[:value]+@initial+aggregated_value
+              end
+              max_date = beginning_of_day DateTime.now
+              result = []
               while current_time <= max_date
-                result.concat([{:time=>current_time,:value=>current_value}])
-                next_time=current_time+1
-                current_value+=@data.select{|data| data[:time]>=current_time && data[:time]<next_time}.map{|data| data[:value]}.inject(0,:+)
-                current_time=next_time
+                result << {:time=>current_time,:value=>current_value}
+                next_time = current_time + 1
+                current_value += @data.
+                  select{|data| data[:time]>=current_time && data[:time]<next_time}.
+                  map{|data| data[:value]}.inject(0,:+)
+                current_time = next_time
               end
               result
             end

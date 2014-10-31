@@ -20,7 +20,7 @@ module Uphex
             when :mailchimp
               Shiatsu_Mailchimp::Client.new
             when :stripe
-              Shiatsu_Stripe::Client.new
+              Stripe::Client.new
           end
         end
 
