@@ -21,7 +21,7 @@ module Uphex
               current_time = closest_next_beginning_of_day [@last_known_value[:time],@since].max
               current_value = begin
                 aggregated_value=@data.
-                  select{|data| data[:time]>=@since && data[:time]<current_time}.
+                  select{|data| (@since...current_time).cover? data[:time]}.
                   map{|data| data[:value]}.inject(0,:+)
                 @last_known_value[:value]+@initial+aggregated_value
               end
@@ -31,7 +31,7 @@ module Uphex
                 result << {:time=>current_time,:value=>current_value}
                 next_time = current_time + 1
                 current_value += @data.
-                  select{|data| data[:time]>=current_time && data[:time]<next_time}.
+                  select{|data| (current_time...next_time).cover? data[:time]}.
                   map{|data| data[:value]}.inject(0,:+)
                 current_time = next_time
               end
