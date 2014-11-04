@@ -70,11 +70,11 @@ module Uphex
                   }
                 }
               end
-              result.inject(0){|memo,result|
-                if result.empty?
+              result.inject(0){|memo,obj|
+                if obj.empty?
                   memo
                 else
-                  memo+result.first['values'].first['value']
+                  memo+obj.first['values'].first['value']
                 end
               }
             end

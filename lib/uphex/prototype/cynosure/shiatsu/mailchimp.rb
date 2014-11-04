@@ -34,6 +34,7 @@ module Uphex
                 @client.reports.summary(campaign['id'])
               rescue Mailchimp::CampaignStatsNotAvailableError
                 # Campaign stats not available for this campaign
+                nil
               end
 
             end
