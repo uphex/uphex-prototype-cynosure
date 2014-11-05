@@ -11,24 +11,24 @@ module Uphex
             # initial:: The aggregated value between the last_known_value and since
             # data:: The data objects to build the history from
             def initialize(since,last_known_value,initial,data)
-              @since=since
-              @last_known_value=(last_known_value or {:time => DateTime.new, :value => 0})
-              @initial=initial
-              @data=data
+              @since = since
+              @last_known_value = (last_known_value or {:time => DateTime.new, :value => 0})
+              @initial = initial
+              @data = data
             end
 
             def history
               current_time = closest_next_beginning_of_day [@last_known_value[:time],@since].max
               current_value = begin
-                aggregated_value=@data.
+                aggregated_value = @data.
                   select{|data| (@since...current_time).cover? data[:time]}.
                   map{|data| data[:value]}.inject(0,:+)
-                @last_known_value[:value]+@initial+aggregated_value
+                @last_known_value[:value] + @initial + aggregated_value
               end
               max_date = beginning_of_day DateTime.now
               result = []
               while current_time <= max_date
-                result << {:time=>current_time,:value=>current_value}
+                result << {:time => current_time,:value => current_value}
                 next_time = current_time + 1
                 current_value += @data.
                   select{|data| (current_time...next_time).cover? data[:time]}.
