@@ -36,17 +36,17 @@ namespace :uphex do
     desc 'run Rubocop'
     RuboCop::RakeTask.new(:rubocop) do |task|
       style_cops = [
-        'CaseIndentation',
-        'ConstantName',
-        'EmptyLines',
-        'IndentationWidth',
-        'SpaceAroundOperators',
-        'Tab',
-        'TrailingWhitespace',
-        'CyclomaticComplexity',
-        'LineLength',
-        'ParameterLists',
-        'PerceivedComplexity',
+        'Style/CaseIndentation',
+        'Style/ConstantName',
+        'Style/EmptyLines',
+        'Style/IndentationWidth',
+        'Style/SpaceAroundOperators',
+        'Style/Tab',
+        'Style/TrailingWhitespace',
+        'Metrics/CyclomaticComplexity',
+        'Metrics/LineLength',
+        'Metrics/ParameterLists',
+        'Metrics/PerceivedComplexity',
       ].join(',')
 
       task.options = [
