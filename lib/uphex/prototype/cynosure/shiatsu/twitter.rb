@@ -7,15 +7,15 @@ module Uphex
 
           class Client
             def initialize(consumer_key,consumer_secret)
-              @consumer_key=consumer_key
-              @consumer_secret=consumer_secret
+              @consumer_key = consumer_key
+              @consumer_secret = consumer_secret
             end
 
             def authenticate(access_token,access_token_secret)
               @client = Twitter::REST::Client.new do |config|
-                config.consumer_key        = @consumer_key
-                config.consumer_secret     = @consumer_secret
-                config.access_token        = access_token
+                config.consumer_key = @consumer_key
+                config.consumer_secret = @consumer_secret
+                config.access_token = access_token
                 config.access_token_secret = access_token_secret
               end
               self
@@ -30,7 +30,8 @@ module Uphex
             end
 
             def retweets(tweet_id)
-              Metric.new('retweets',[[:retweets],[]],@client.retweets(tweet_id).map{|tweet| {:timestamp=>tweet.created_at,:payload=>tweet}})
+              Metric.new('retweets',[[:retweets],[]],
+                         @client.retweets(tweet_id).map{|tweet| {:timestamp => tweet.created_at,:payload => tweet}})
             end
 
             def favorites_count(tweet_id)

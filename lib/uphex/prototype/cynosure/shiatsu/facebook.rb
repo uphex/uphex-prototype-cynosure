@@ -15,34 +15,34 @@ module Uphex
             end
 
             def posts
-              profile_id=profile['id']
-              result=[]
-              page=@graph.get_connections('me','feed')
+              profile_id = profile['id']
+              result = []
+              page = @graph.get_connections('me','feed')
               while !page.nil?
-                result=result.concat(page.select{|p|
-                  p['from']['id']==profile_id
+                result = result.concat(page.select{|p|
+                  p['from']['id'] == profile_id
                 })
-                page=page.next_page
+                page = page.next_page
               end
               result
             end
 
             def videos
-              posts.select{|post| post['type']=='video'}
+              posts.select{|post| post['type'] == 'video'}
             end
 
             def get_insight_data(insight,since)
-              value=Array.new
-              page=@graph.get_connections('me','insights/'+insight)
-              while !page[0]['values'].find_index{|v| (Time.parse(v['end_time'])<=>since) == 1}.nil?
+              value = Array.new
+              page = @graph.get_connections('me','insights/' + insight)
+              while !page[0]['values'].find_index{|v| (Time.parse(v['end_time']) <=> since) == 1}.nil?
                 value.concat(page[0]['values'].select{|v|
-                  (Time.parse(v['end_time'])<=>since)==1
+                  (Time.parse(v['end_time']) <=> since) == 1
                 }.map{|v|
-                  {:timestamp=>v['end_time'],:payload=>v['value']}
+                  {:timestamp => v['end_time'],:payload => v['value']}
                 })
-                page=page.previous_page
+                page = page.previous_page
               end
-              value.sort{|v1,v2| v1[:timestamp]<=>v2[:timestamp]}
+              value.sort{|v1,v2| v1[:timestamp] <=> v2[:timestamp]}
             end
 
             def page_visits(since)
@@ -54,17 +54,19 @@ module Uphex
             end
 
             def page_posts_impressions_paid(since)
-              Metric.new('page_posts_impressions_paid',[[:page_posts_impressions_paid],[:day]],get_insight_data('page_posts_impressions_paid',since))
+              Metric.new('page_posts_impressions_paid',[[:page_posts_impressions_paid],[:day]],
+                         get_insight_data('page_posts_impressions_paid',since))
             end
 
             def page_impressions_paid(since)
-              Metric.new('page_impressions_paid',[[:page_impressions_paid],[:day]],get_insight_data('page_impressions_paid',since))
+              Metric.new('page_impressions_paid',[[:page_impressions_paid],[:day]],
+                         get_insight_data('page_impressions_paid',since))
             end
 
             def post_aggregated_insight(posts,metric)
-              result=[]
+              result = []
               posts.map{|p| p['id']}.each_slice(50) do |post_ids_slice|
-                result=result.concat @graph.batch{|batch_api|
+                result = result.concat @graph.batch{|batch_api|
                   post_ids_slice.each {|post_id|
                     batch_api.get_connection(post_id,"insights/#{metric}")
                   }
@@ -74,25 +76,29 @@ module Uphex
                 if obj.empty?
                   memo
                 else
-                  memo+obj.first['values'].first['value']
+                  memo + obj.first['values'].first['value']
                 end
               }
             end
 
             def post_impressions_paid
-              Metric.new('post_impressions_paid',[[:post_impressions_paid],[:lifetime]],{:payload=>post_aggregated_insight(posts,'post_impressions_paid')})
+              Metric.new('post_impressions_paid',[[:post_impressions_paid],[:lifetime]],
+                         {:payload => post_aggregated_insight(posts,'post_impressions_paid')})
             end
 
             def post_impressions_fan_paid
-              Metric.new('post_impressions_fan_paid',[[:post_impressions_fan_paid],[:lifetime]],{:payload=>post_aggregated_insight(posts,'post_impressions_fan_paid')})
+              Metric.new('post_impressions_fan_paid',[[:post_impressions_fan_paid],[:lifetime]],
+                         {:payload => post_aggregated_insight(posts,'post_impressions_fan_paid')})
             end
 
             def post_video_complete_views_paid
-              Metric.new('post_video_complete_views_paid',[[:post_video_complete_views_paid],[:lifetime]],{:payload=>post_aggregated_insight(videos,'post_video_complete_views_paid')})
+              Metric.new('post_video_complete_views_paid',[[:post_video_complete_views_paid],[:lifetime]],
+                         {:payload => post_aggregated_insight(videos,'post_video_complete_views_paid')})
             end
 
             def post_video_views_paid
-              Metric.new('post_video_views_paid',[[:post_video_views_paid],[:lifetime]],{:payload=>post_aggregated_insight(videos,'post_video_views_paid')})
+              Metric.new('post_video_views_paid',[[:post_video_views_paid],[:lifetime]],
+                         {:payload => post_aggregated_insight(videos,'post_video_views_paid')})
             end
           end
         end

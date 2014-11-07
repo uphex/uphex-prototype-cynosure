@@ -8,7 +8,7 @@ module Uphex
           class Client
 
             def initialize
-              @metrics=%w(hard_bounces soft_bounces unsubscribes forwards unique_opens unique_clicks)
+              @metrics = %w(hard_bounces soft_bounces unsubscribes forwards unique_opens unique_clicks)
             end
 
             def authenticate(api_key)
@@ -21,9 +21,9 @@ module Uphex
             end
 
             def campaigns
-              limit=100
-              total=@client.campaigns.list(nil,0,0)['total']
-              num_pages=(total/limit.to_f).ceil
+              limit = 100
+              total = @client.campaigns.list(nil,0,0)['total']
+              num_pages = (total / limit.to_f).ceil
               (0...num_pages).flat_map{|n|
                 @client.campaigns.list(nil,n,limit)['data']
               }
@@ -40,9 +40,11 @@ module Uphex
             end
 
             def aggregated_campaign_stats
-              campaigns.map{|campaign| campaign_stats(campaign)}.compact.inject(Hash[@metrics.map{|metric| [metric,0]}]){|sum, stat|
-                Hash[@metrics.map{|metric| [metric, sum[metric]+stat[metric]]}]
-              }
+              campaigns.map{|campaign| campaign_stats(campaign)}.
+                compact.
+                inject(Hash[@metrics.map{|metric| [metric,0]}]){|sum, stat|
+                  Hash[@metrics.map{|metric| [metric, sum[metric] + stat[metric]]}]
+                }
             end
           end
         end

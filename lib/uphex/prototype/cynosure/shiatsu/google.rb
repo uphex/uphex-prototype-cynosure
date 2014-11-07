@@ -8,8 +8,8 @@ module Uphex
           class Client
 
             def initialize(identifier,secret)
-              @identifier=identifier
-              @secret=secret
+              @identifier = identifier
+              @secret = secret
             end
 
             def authenticate(access_token)
@@ -18,7 +18,7 @@ module Uphex
                   :token_url => 'https://accounts.google.com/o/oauth2/token'
               })
 
-              access_token=OAuth2::AccessToken.from_hash client, {:access_token => access_token}
+              access_token = OAuth2::AccessToken.from_hash client, {:access_token => access_token}
 
               @user = Legato::User.new(access_token)
 
@@ -34,11 +34,11 @@ module Uphex
             end
 
             def profiles_for_account(accountId)
-              @user.accounts.select{|account| account.id==accountId}.first.profiles
+              @user.accounts.select{|account| account.id == accountId}.first.profiles
             end
 
             def profile=(profile)
-              @profile=profile
+              @profile = profile
             end
 
             class Visits
@@ -98,7 +98,7 @@ module Uphex
             end
 
             def beginning_of_week(date)
-              days_to_monday = date.wday!=0 ? date.wday-1 : 6
+              days_to_monday = date.wday != 0 ? date.wday - 1 : 6
               date - days_to_monday
             end
 
@@ -108,41 +108,61 @@ module Uphex
 
             def apply_granularity(result,granularity)
               case granularity
-                when :day
-                  result.map{|r| {:timestamp=>Date.parse(r.date),:payload=>yield(r).to_i}}
-                when :week
-                  result.group_by{|r| beginning_of_week(Date.parse(r.date))}.map{|k,v| {:timestamp=>k,:payload=>v.reduce(0){|sum,value| sum+yield(value).to_i}}}
-                when :month
-                  result.group_by{|r| beginning_of_month(Date.parse(r.date))}.map{|k,v| {:timestamp=>k,:payload=>v.reduce(0){|sum,value| sum+yield(value).to_i}}}
+              when :day
+                result.map{|r| {:timestamp => Date.parse(r.date),:payload => yield(r).to_i}}
+              when :week
+                result.group_by{|r| beginning_of_week(Date.parse(r.date))}.
+                  map{|k,v| {:timestamp => k,:payload => v.reduce(0){|sum,value| sum + yield(value).to_i}}}
+              when :month
+                result.group_by{|r| beginning_of_month(Date.parse(r.date))}.
+                  map{|k,v| {:timestamp => k,:payload => v.reduce(0){|sum,value| sum + yield(value).to_i}}}
               end
             end
 
             def visits(start_date,end_date,granularity)
-              Metric.new('visits',[[:visits],[granularity]],apply_granularity(Visits.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.visits})
+              Metric.new('visits',[[:visits],[granularity]],
+                         apply_granularity(
+                           Visits.results(@profile,:start_date => start_date,:end_date => end_date),granularity
+                         ){|r| r.visits})
             end
 
             def visitors(start_date,end_date,granularity)
-              Metric.new('visitors',[[:visitors],[granularity]],apply_granularity(Visitors.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.visitors})
+              Metric.new('visitors',[[:visitors],[granularity]],
+                         apply_granularity(
+                           Visitors.results(@profile,:start_date => start_date,:end_date => end_date),granularity
+                         ){|r| r.visitors})
             end
 
             def bounces(start_date,end_date,granularity)
-              Metric.new('bounces',[[:bounces],[granularity]],apply_granularity(Bounces.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.bounces})
+              Metric.new('bounces',[[:bounces],[granularity]],
+                         apply_granularity(
+                           Bounces.results(@profile,:start_date => start_date,:end_date => end_date),granularity
+                         ){|r| r.bounces})
             end
 
             def referrers(start_date,end_date)
-              Referrers.results(@profile,:start_date=>start_date,:end_date=>end_date).map{|r| r.fullReferrer}
+              Referrers.results(@profile,:start_date => start_date,:end_date => end_date).map{|r| r.fullReferrer}
             end
 
             def impressions(start_date,end_date,granularity)
-              Metric.new('impressions',[[:impressions],[granularity]],apply_granularity(Impressions.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.impressions})
+              Metric.new('impressions',[[:impressions],[granularity]],
+                         apply_granularity(
+                           Impressions.results(@profile,:start_date => start_date,:end_date => end_date),granularity
+                         ){|r| r.impressions})
             end
 
             def ad_clicks(start_date,end_date,granularity)
-              Metric.new('adClicks',[[:adClicks],[granularity]],apply_granularity(AdClicks.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.adClicks})
+              Metric.new('adClicks',[[:adClicks],[granularity]],
+                         apply_granularity(
+                           AdClicks.results(@profile,:start_date => start_date,:end_date => end_date),granularity
+                         ){|r| r.adClicks})
             end
 
             def organic_searches(start_date,end_date,granularity)
-              Metric.new('organicSearches',[[:organicSearches],[granularity]],apply_granularity(OrganicSearches.results(@profile,:start_date=>start_date,:end_date=>end_date),granularity){|r| r.organicSearches})
+              Metric.new('organicSearches',[[:organicSearches],[granularity]],
+                         apply_granularity(
+                           OrganicSearches.results(@profile,:start_date => start_date,:end_date => end_date),granularity
+                         ){|r| r.organicSearches})
             end
           end
         end

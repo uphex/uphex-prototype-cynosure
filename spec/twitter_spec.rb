@@ -5,22 +5,22 @@ require 'twitter'
 describe Uphex::Prototype::Cynosure::Shiatsu do
 
   before do
-    @tweets=[
-        OpenStruct.new(:id=>1,:favorite_count=>2),
-        OpenStruct.new(:id=>2,:favorite_count=>3)
+    @tweets = [
+        OpenStruct.new(:id => 1,:favorite_count => 2),
+        OpenStruct.new(:id => 2,:favorite_count => 3)
     ]
 
-    @retweets_for_1=[
-        OpenStruct.new(:id=>8,:created_at=>Time.parse('2014-02-24 12:22:26')),
-        OpenStruct.new(:id=>9,:created_at=>Time.parse('2014-02-24 12:23:26')),
-        OpenStruct.new(:id=>10,:created_at=>Time.parse('2014-02-24 12:24:26')),
+    @retweets_for_1 = [
+        OpenStruct.new(:id => 8,:created_at => Time.parse('2014-02-24 12:22:26')),
+        OpenStruct.new(:id => 9,:created_at => Time.parse('2014-02-24 12:23:26')),
+        OpenStruct.new(:id => 10,:created_at => Time.parse('2014-02-24 12:24:26')),
     ]
 
-    @user= OpenStruct.new(:followers_count=>2,:friends_count=>3)
+    @user = OpenStruct.new(:followers_count => 2,:friends_count => 3)
 
-    @client=Uphex::Prototype::Cynosure::Shiatsu.client(:twitter,nil,nil)
+    @client = Uphex::Prototype::Cynosure::Shiatsu.client(:twitter,nil,nil)
 
-    client=double('client')
+    client = double('client')
 
     @client.instance_variable_set("@client", client)
 
@@ -41,7 +41,7 @@ describe Uphex::Prototype::Cynosure::Shiatsu do
   end
 
   it 'should return the retweets' do
-    retweets=@client.retweets(1)
+    retweets = @client.retweets(1)
     expect(retweets.name).to eql('retweets')
     expect(retweets.unit).to eql([[:retweets],[]])
     expect(retweets.value.count).to eql(3)

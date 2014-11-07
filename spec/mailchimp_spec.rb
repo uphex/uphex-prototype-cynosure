@@ -3,59 +3,59 @@ require 'ostruct'
 
 describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Mailchimp do
   before do
-    @client=Uphex::Prototype::Cynosure::Shiatsu.client(:mailchimp,nil,nil)
+    @client = Uphex::Prototype::Cynosure::Shiatsu.client(:mailchimp,nil,nil)
 
-    client=double('client')
+    client = double('client')
     @client.instance_variable_set("@client", client)
 
     allow(client).to receive(:users) do
-      users=double('users')
+      users = double('users')
 
-      allow(users).to receive(:profile).and_return({'id'=>'12','account_name'=>'test_account'})
+      allow(users).to receive(:profile).and_return({'id' => '12','account_name' => 'test_account'})
 
       users
     end
 
-    @campaign1={
-        'id'=>'camp1'
+    @campaign1 = {
+        'id' => 'camp1'
     }
-    @campaign2={
-        'id'=>'camp2'
+    @campaign2 = {
+        'id' => 'camp2'
     }
-    @campaign3={
-        'id'=>'camp3'
-    }
-
-    @campaign1_summary={
-        'hard_bounces'=>2,
-        'soft_bounces'=>3,
-        'unsubscribes'=>4,
-        'forwards'=>5,
-        'unique_opens'=>6,
-        'unique_clicks'=>7
+    @campaign3 = {
+        'id' => 'camp3'
     }
 
-    @campaign3_summary={
-        'hard_bounces'=>8,
-        'soft_bounces'=>9,
-        'unsubscribes'=>10,
-        'forwards'=>11,
-        'unique_opens'=>12,
-        'unique_clicks'=>13
+    @campaign1_summary = {
+        'hard_bounces' => 2,
+        'soft_bounces' => 3,
+        'unsubscribes' => 4,
+        'forwards' => 5,
+        'unique_opens' => 6,
+        'unique_clicks' => 7
+    }
+
+    @campaign3_summary = {
+        'hard_bounces' => 8,
+        'soft_bounces' => 9,
+        'unsubscribes' => 10,
+        'forwards' => 11,
+        'unique_opens' => 12,
+        'unique_clicks' => 13
     }
 
     allow(client).to receive(:campaigns) do
-      campaign=double('campaign')
+      campaign = double('campaign')
 
-      allow(campaign).to receive(:list).with(nil,0,0).and_return({'total'=>3})
+      allow(campaign).to receive(:list).with(nil,0,0).and_return({'total' => 3})
 
-      allow(campaign).to receive(:list).with(nil,0,100).and_return({'data'=>[@campaign1,@campaign2,@campaign3]})
+      allow(campaign).to receive(:list).with(nil,0,100).and_return({'data' => [@campaign1,@campaign2,@campaign3]})
 
       campaign
     end
 
     allow(client).to receive(:reports) do
-      reports=double('reports')
+      reports = double('reports')
 
       allow(reports).to receive(:summary).with('camp1').and_return(@campaign1_summary)
 
@@ -74,21 +74,21 @@ describe Uphex::Prototype::Cynosure::Shiatsu::Shiatsu_Mailchimp do
   end
 
   it 'should return the campaigns when doing so requires paginating' do
-    client=double('client')
+    client = double('client')
     @client.instance_variable_set("@client", client)
 
     allow(client).to receive(:campaigns) do
-      campaign=double('campaign')
+      campaign = double('campaign')
 
-      allow(campaign).to receive(:list).with(nil,0,0).and_return({'total'=>104})
+      allow(campaign).to receive(:list).with(nil,0,0).and_return({'total' => 104})
 
-      allow(campaign).to receive(:list).with(nil,0,100).and_return({'data'=>(0...100).map{|n| {'id'=>"camp#{n}"}}})
-      allow(campaign).to receive(:list).with(nil,1,100).and_return({'data'=>(100...104).map{|n| {'id'=>"camp#{n}"}}})
+      allow(campaign).to receive(:list).with(nil,0,100).and_return({'data' => (0...100).map{|n| {'id' => "camp#{n}"}}})
+      allow(campaign).to receive(:list).with(nil,1,100).and_return({'data' => (100...104).map{|n| {'id' => "camp#{n}"}}})
 
       campaign
     end
 
-    expect(@client.campaigns).to eq((0...104).map{|n| {'id'=>"camp#{n}"}})
+    expect(@client.campaigns).to eq((0...104).map{|n| {'id' => "camp#{n}"}})
   end
 
   it 'should return stats for a campaign' do
